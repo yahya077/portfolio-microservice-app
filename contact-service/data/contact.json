@@ -1,0 +1,15 @@
+{
+  "message": "Success",
+  "data": {
+    "first_name": "Yahya",
+    "last_name": "Hindioğlu",
+    "full_name": "Yahya Hindioğlu",
+    "job_title": "Full Stack Developer",
+    "about_description": "Hello there! My name is Yahya Hindioğlu. I am a Full Stack Developer, and I'm very passionate and dedicated to my work.\n\n I have acquired the skills and knowledge necessary to make your project a success.",
+    "address:": "Ave Street, Istanbul, TR",
+    "degree": "Bachelor’s Degree",
+    "email": "business[at]yahyahindioglu.com",
+    "phone": "+90 *** *** ** **",
+    "map_frame_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48320.39666380446!2d-73.965441!3d40.805449!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2f63c75af2d65%3A0xf45542f6cb090cc9!2s2880%20Broadway%2C%20New%20York%2C%20NY%2010025!5e0!3m2!1sen!2sus!4v1676721458664!5m2!1sen!2sus"
+  }
+}
