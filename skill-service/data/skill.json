@@ -1,0 +1,35 @@
+{
+  "message": "Success",
+  "data": [
+    {
+      "category": "Programming",
+      "category_slug": "programming",
+      "name": "Html & Css",
+      "value": "99"
+    },
+    {
+      "category": "Programming",
+      "category_slug": "programming",
+      "name": "Javascript",
+      "value": "99"
+    },
+    {
+      "category": "Programming",
+      "category_slug": "programming",
+      "name": "Object Oriented Programming (OOP)",
+      "value": "99"
+    },
+    {
+      "category": "Language",
+      "category_slug": "language",
+      "name": "Turkish",
+      "value": "99"
+    },
+    {
+      "category": "Language",
+      "category_slug": "language",
+      "name": "English",
+      "value": "99"
+    }
+  ]
+}
