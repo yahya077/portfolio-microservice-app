@@ -10,6 +10,7 @@ services:
       - ${SOCIAL_SERVICE_PORT}:${SOCIAL_SERVICE_PORT}
       - ${CONTACT_SERVICE_PORT}:${CONTACT_SERVICE_PORT}
       - ${SKILL_SERVICE_PORT}:${SKILL_SERVICE_PORT}
+      - ${WEB_BFF_PORT}:${WEB_BFF_PORT}
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
@@ -17,9 +18,10 @@ services:
       - "--providers.docker.network=traefik_proxy"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.social.address=:${SOCIAL_SERVICE_PORT}"
-      - "--entrypoints.contact.address=:${CONTACT_SERVICE_PORT}"
-      - "--entrypoints.skill.address=:${SKILL_SERVICE_PORT}"
+      - "--entrypoints.social-service.address=:${SOCIAL_SERVICE_PORT}"
+      - "--entrypoints.contact-service.address=:${CONTACT_SERVICE_PORT}"
+      - "--entrypoints.skill-service.address=:${SKILL_SERVICE_PORT}"
+      - "--entrypoints.web-bff.address=:${WEB_BFF_PORT}"
     networks:
       - proxy
     volumes:
@@ -90,6 +92,27 @@ services:
       traefik.port: ${SKILL_SERVICE_PORT}
       traefik.http.routers.skill-service.rule: Host(`${SKILL_SERVICE_HOST}`)
       traefik.http.routers.skill-service.entrypoints: web
+
+  web-bff:
+    container_name: web-bff
+    build:
+      dockerfile: web-bff/Dockerfile
+      context: .
+      target: ${ENV}
+      args:
+        SERVICE_PORT: ${WEB_BFF_PORT}
+    image: web-bff:latest
+    networks:
+      - proxy
+    volumes:
+      - ./web-bff:/app
+    env_file:
+      - ./web-bff/.env
+    labels:
+      traefik.enable: true
+      traefik.port: ${WEB_BFF_PORT}
+      traefik.http.routers.web-bff.rule: Host(`${WEB_BFF_HOST}`)
+      traefik.http.routers.web-bff.entrypoints: web
 
 networks:
   proxy:
