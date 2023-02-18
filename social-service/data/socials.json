@@ -1,0 +1,32 @@
+{
+  "message": "Success",
+  "data": [
+    {
+      "name": "Twitter",
+      "slug": "twitter",
+      "root_path": "https://twitter.com/",
+      "profile_path": "https://twitter.com/yahyahindioglu",
+      "icon_url": "https://cdn.yahyahindioglu.com/gallery/social-media/twitter/icons/logo-icon.png",
+      "username": "yahyahindioglu",
+      "prettified_name": "Yahya Hindioğlu"
+    },
+    {
+      "name": "Github",
+      "slug": "github",
+      "root_path": "https://github.com/",
+      "profile_path": "https://github.com/yahya077",
+      "icon_url": "https://cdn.yahyahindioglu.com/gallery/social-media/github/icons/logo-icon.png",
+      "username": "yahya077",
+      "prettified_name": "Yahya Hindioğlu"
+    },
+    {
+      "name": "Facebook",
+      "slug": "facebook",
+      "root_path": "https://facebook.com/",
+      "profile_path": "https://facebook.com/#",
+      "icon_url": "https://cdn.yahyahindioglu.com/gallery/social-media/facebook/icons/logo-icon.png",
+      "username": "yahyahindioglu",
+      "prettified_name": "Yahya Hindioğlu"
+    }
+  ]
+}
