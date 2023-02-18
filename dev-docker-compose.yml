@@ -8,6 +8,7 @@ services:
       - 80:80
       - 8081:8080
       - ${SOCIAL_SERVICE_PORT}:${SOCIAL_SERVICE_PORT}
+      - ${CONTACT_SERVICE_PORT}:${CONTACT_SERVICE_PORT}
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
@@ -16,6 +17,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.social.address=:${SOCIAL_SERVICE_PORT}"
+      - "--entrypoints.contact.address=:${CONTACT_SERVICE_PORT}"
     networks:
       - proxy
     volumes:
@@ -45,6 +47,26 @@ services:
       traefik.port: ${SOCIAL_SERVICE_PORT}
       traefik.http.routers.social-service.rule: Host(`${SOCIAL_SERVICE_HOST}`)
       traefik.http.routers.social-service.entrypoints: web
+  contact-service:
+    container_name: contact-service
+    build:
+      dockerfile: contact-service/Dockerfile
+      context: .
+      target: ${ENV}
+      args:
+        SERVICE_PORT: ${CONTACT_SERVICE_PORT}
+    image: contact-service:latest
+    networks:
+      - proxy
+    volumes:
+      - ./contact-service:/app
+    env_file:
+      - ./contact-service/.env
+    labels:
+      traefik.enable: true
+      traefik.port: ${CONTACT_SERVICE_PORT}
+      traefik.http.routers.contact-service.rule: Host(`${CONTACT_SERVICE_HOST}`)
+      traefik.http.routers.contact-service.entrypoints: web
 
 networks:
   proxy:
