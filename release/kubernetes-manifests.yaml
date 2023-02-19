@@ -1,0 +1,224 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socialservice
+spec:
+  selector:
+    matchLabels:
+      app: socialservice
+  template:
+    metadata:
+      labels:
+        app: socialservice
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      imagePullSecrets:
+        - name: dockersecret
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: server
+          image: registry.gitlab.com/yahyahindioglu/social-service:latest
+          ports:
+            - containerPort: 3099
+          env:
+            - name: SERVICE_PORT
+              value: "3099"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: socialservice
+spec:
+  type: ClusterIP
+  selector:
+    app: socialservice
+  ports:
+    - name: http
+      port: 3099
+      targetPort: 3099
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillservice
+spec:
+  selector:
+    matchLabels:
+      app: skillservice
+  template:
+    metadata:
+      labels:
+        app: skillservice
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      imagePullSecrets:
+        - name: dockersecret
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: server
+          image: registry.gitlab.com/yahyahindioglu/skill-service:latest
+          ports:
+            - containerPort: 3097
+          env:
+            - name: SERVICE_PORT
+              value: "3097"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skillservice
+spec:
+  type: ClusterIP
+  selector:
+    app: skillservice
+  ports:
+    - name: http
+      port: 3097
+      targetPort: 3097
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contactservice
+spec:
+  selector:
+    matchLabels:
+      app: contactservice
+  template:
+    metadata:
+      labels:
+        app: contactservice
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      imagePullSecrets:
+        - name: dockersecret
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: server
+          image: registry.gitlab.com/yahyahindioglu/contact-service:latest
+          ports:
+            - containerPort: 3098
+          env:
+            - name: SERVICE_PORT
+              value: "3098"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contactservice
+spec:
+  type: ClusterIP
+  selector:
+    app: contactservice
+  ports:
+    - name: http
+      port: 3098
+      targetPort: 3098
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webbff
+spec:
+  selector:
+    matchLabels:
+      app: webbff
+  template:
+    metadata:
+      labels:
+        app: webbff
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      imagePullSecrets:
+        - name: dockersecret
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: server
+          image: registry.gitlab.com/yahyahindioglu/web-bff:latest
+          ports:
+            - containerPort: 3010
+          env:
+            - name: SERVICE_PORT
+              value: "3010"
+            - name: SOCIAL_SERVICE_ADDR
+              value: "socialservice:3099"
+            - name: CONTACT_SERVICE_ADDR
+              value: "contactservice:3098"
+            - name: SKILL_SERVICE_ADDR
+              value: "skillservice:3097"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webbff
+spec:
+  type: ClusterIP
+  selector:
+    app: webbff
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webbff-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: webbff
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3010
