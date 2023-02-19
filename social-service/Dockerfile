@@ -22,7 +22,7 @@ FROM base as prod
 
 WORKDIR /app
 
-COPY container .
+COPY . .
 
 RUN go build -o /bin/server ./main.go
 
